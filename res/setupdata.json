@@ -1,0 +1,42 @@
+{
+    "db": {
+        "host": "127.0.0.1",
+        "user": "root",
+        "password": null,
+        "database": "Cotton"
+    },
+    "tables": [
+        {
+            "name": "Access",
+            "columns": {
+                "Id_Persoana": "INT UNSIGNED",
+                "Data": "TIMESTAMP(2)",
+                "Sens": "VARCHAR(3)",
+                "Poarta": "SMALLINT UNSIGNED"
+            }
+        },
+        {
+            "name": "Persoane",
+            "columns": {
+                "Nume": "VARCHAR(50)",
+                "Prenume": "VARCHAR(50)",
+                "Companie": "VARCHAR(50)",
+                "IdManager": "INT UNSIGNED",
+                "Email": "VARCHAR(50)"
+            }
+        }
+    ],
+    "folders": [
+        {
+            "name": "entries",
+            "nice name": "entries",
+            "path": "Data/intrari"
+        },
+        {
+            "name": "entries_backup",
+            "nice name": "entries backup", 
+            "path": "Data/backup_intari"
+        }
+    ],
+    "settings file": "constants.py"
+}
