@@ -96,6 +96,7 @@ class DbBaseActions:
         query = ""
         for i in dictItems:
             query += f"`{dictItems[0]}` = '{dictItems[1]}', "
+        # TODO: Warning, this is not ok. This is wrong. Check the MYSQL command. it hs to be set `something` = "something"!!
         self.__cursor.execute(f"UPDATE `{table}` SET {query[:-1]} WHERE (`Id` = '{id}')")
         self.__conn.commit()
     
