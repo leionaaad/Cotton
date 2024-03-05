@@ -1,21 +1,21 @@
 import os
 import shutil
 import mysql.connector as mc
-import json
 from app.DbBaseActions import DbBaseActions as dba
+from app.FileJsonActions import FileJsonActions as jsa
 
 
-# this is only temporary, Until I make the file I/O classes
-def getDataFromJson(pathToJson) -> dict:
-    file = open(pathToJson, "r")
-    result = json.load(file)
-    file.close()
-    return result
+"""This will remove everything. Settings files, database tables, everything and will start from zero."""
 
 
 def unsetup(deleteDb: bool, deleteFolders: bool) -> None:
-    #TODO: check if constants.py exists. Assume nothing to do if it doesn't
-    setupdata = getDataFromJson("res/setupdata.json")
+    if not os.path.exists("constants.py"):
+        print("Nothing to do, looks like nothing is set up yet.")
+        exit()
+
+    jsonActions =  jsa()
+    setupdata = jsonActions.readFromFile("res/setupdata.json")
+    
     if deleteDb:
         dbase = dba(setupdata["db"]["host"], setupdata["db"]["user"], setupdata["db"]["password"], setupdata["db"]["database"])
         dbase.deleteDatabase()
@@ -30,4 +30,5 @@ def unsetup(deleteDb: bool, deleteFolders: bool) -> None:
     print("Done! You're back to step 1.")
 
 
+# TODO: Make this an interactive thing too.
 unsetup(True, True)

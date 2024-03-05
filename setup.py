@@ -1,34 +1,21 @@
 import os
-import mysql.connector as mc
-import json
 from app.DbBaseActions import DbBaseActions as dba
+from app.FileBaseActions import FileBaseActions as fba
+from app.FileJsonActions import FileJsonActions as jsa
 
 
 """Use this file to set up everything. Databases, Folders, whatever it is needed.
 If there are already things present, they will be deleted and replaced.
 The setup.py reset will reset everythingh to the initial states, by removing all the data and dropping the database."""
 
-#TODO: This will be handled by a class
-def readFromJson(path: str) -> dict:
-    #TODO: add error handling!
-    file = open(path, "r")
-    data = json.load(file)
-    file.close()
-    return data
-
-#TODO: This will be handled by a class. This is only a temporary function
-def writeToJson(path: str, content: dict, backup=False) -> dict:
-    #TODO: add error handling. Especially with the backup file.
-    if backup == True:
-        os.rename(path, f"{path}.bak")
-    file = open(path, "w")
-    json.dump(content, file)
-    file.close()
-
 
 # get the needed information from the user
 def getInfoFromUserTerminal() -> dict :
-    data = readFromJson("res/setupdata.json")
+    """Collects the data from the user and returns it as a dictionary of known structure."""
+
+    jsonActions = jsa()
+    fileActions = fba()
+    data = jsonActions.readFromFile("res/setupdata.json")
     print("\nGood day to you, sir.\n")
     print("The following are goin' to happen:\n\t-You will be asked the db and a connection to a database will be attempted \
           \n\t-If the provided database doesn't exist a new one will be created, otherwise the provided one will be used.\
@@ -55,37 +42,23 @@ def getInfoFromUserTerminal() -> dict :
             folder["path"] = pathToFolder
     print(120 * "=")
     # TODO: check if the folder already exists. do nothing otherwise
-    writeToJson("res/setupdata.json", data, True)
+    fileActions.filebackup("res/setupdata.json", "res/setupdata.json.bak", False)
+    jsonActions.writeToFile("res/setupdata.json", data, True)
+    # writeToJson("res/setupdata.json", data, True)
     return data
 
-#TODO: this will be handled by a class
-# Folders and files
-def writeToFile(pathToFile: str, content: str) -> None :
-    # TODO: check if file already exists, 
-    file = open(pathToFile, "w")
-    file.write(content)
-    file.close()
-    print(f"{pathToFile} is ready.")
 
+def setup(providedData: dict) -> None :
+    """Uses data from the dictionary provided to set up the database, the folders, the everything."""
+    if os.path.exists("constants.py"):
+        print("Seems like this is already set up, buddy")
+        exit()
 
-def composeSettings(source: dict, head="", tail="") -> str:
-    fileVars = head
-    if type(source) == dict:
-        for key, value in source.items():
-            fileVars = f"{fileVars}{key} = \"{value}\"\n"
-    elif type(source) == list:
-        for item in source:
-            fileVars = f"{fileVars}{item["name"]} = \"{item["path"]}\"\n"
-    return fileVars
-
-
-def setup() -> None :
-    #TODO: check if constants already exists. If it does, assume it was already installed
-    providedData = getInfoFromUserTerminal()
     dbase = dba(providedData["db"]["host"], providedData["db"]["user"], providedData["db"]["password"])
+    fileActions = fba()
 
-    db_constants = composeSettings(providedData["db"], "#Database info\n")
-    folder_constants = composeSettings(providedData["folders"], "#Data folders\n")
+    db_constants = fileActions.composeSettings(providedData["db"], "#Database info\n")
+    folder_constants = fileActions.composeSettings(providedData["folders"], "#Data folders\n")
 
     dbase.createDatabase(providedData["db"]["database"], True)
 
@@ -94,9 +67,10 @@ def setup() -> None :
 
     for folder in providedData["folders"]:
         os.makedirs(folder["path"])
-    writeToFile("constants.py", f"{db_constants}\n{folder_constants}")
+    fileActions.writeToFile("constants.py", f"{db_constants}\n{folder_constants}", True)
+    print("apparently everything just has been set up properly.")
 
 
 # Finally, run the damned thing
-setup()
+setup(getInfoFromUserTerminal())
 
