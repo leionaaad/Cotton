@@ -2,9 +2,12 @@ from app.DbBaseActions import DbBaseActions
 import mysql.connector as mc
 
 class DbPersonalActions(DbBaseActions):
+    """Some convenient methods to insert data in the Personal table of the database. All these are possible from the base class too."""
     def __init__(self, host: str, user: str, password: str, database: str, table: str) -> None:
         super().__init__(host, user, password, database)
         self.table = table
+        self.__conn = self.getConn()
+        self.__cursor = self.getCursor()
     
     def addEntry(self, data: dict) -> None:
         """Yes, this exists in the parent class, but here uses a specific, more conveniant way to insert data into the personal table. Basically a shorter way of doing things."""

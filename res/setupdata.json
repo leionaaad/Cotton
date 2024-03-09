@@ -9,7 +9,7 @@
         {
             "name": "Access",
             "columns": {
-                "Id_Persoana": "INT UNSIGNED",
+                "IdPersoana": "INT UNSIGNED",
                 "Data": "TIMESTAMP(2)",
                 "Sens": "VARCHAR(3)",
                 "Poarta": "SMALLINT UNSIGNED"
@@ -35,7 +35,7 @@
         {
             "name": "entries_backup",
             "nice name": "entries backup", 
-            "path": "Data/backup_intari"
+            "path": "Data/backup_intrari"
         }
     ],
     "settings file": "constants.py"

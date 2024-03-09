@@ -16,6 +16,14 @@ class DbBaseActions:
             print(f"Buddy, I just tested the connection and something is very wrong. Most likely the credentials. Here's what's wrong:\n{e}")
             exit()
 
+    # I need this because child classes can't access private attributes and I am not going to rewrite this pile of shit
+    def getConn(self):
+        return self.__conn
+    
+
+    def getCursor(self):
+        return self.__cursor
+
 
     def setDatabase(self, database: str) -> None:
         """This just sets the database variable to something else. It doesn't create a database. To do that, use createDatabase method. That creates a database AND sets the database variable to the newly created database"""

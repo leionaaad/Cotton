@@ -1,34 +1,33 @@
-# Setting things up - DONE
-# -venv - DONE
-# -gitignore - DONE
-# -Known required folders - DONE
-# - requirements.txt - NOT DONE
-# - check if everything is set up - NOT DONE
-# unsetup - DONE
+# TODO: Somewhere add a mapping, so csv headers and db columns can be matched.
 
-from app.DbAccessActions import DbAccessActions as dbaa
-from app.DbPersonalActions import DbPersonalActions as dbpa
-from app.FileCsvActions import FileCsvActions as csva
-from app.FileTxtActions import FileTxtActions as txta
-from app.FileJsonActions import FileJsonActions as jsa
-# from constants import *
-
-# Run here the database test code (temporary)
+import os
+import time
+from flask import Flask
+from app.GateBase import GateBase as gb
+try:
+    from constants import *
+except ModuleNotFoundError:
+    print("Constants.py is missing. It's either not set up properly, either some moron messed with the files.\nRun setup.py to set everything up, only then run main.py")
 
 
-# dba = dbaa("localhost", "root", "anyadkinnya", "cotton", "access")
-# dbp = dbpa("localhost", "root", "anyadkinnya", "cotton", "persoane")
-# print(dba.table)
-# print(dbp.table)
+tick = 2
+timecutoff = 20
 
-print("CSV ACTIONS")
-csvActions = csva()
-print(csvActions.readFromFile("E:/Courses/ItSchool/Cotton/doq/Poarta2.csv"))
+gateActions = gb(host, user, password, database, "access")
 
-print("TXT ACTIONS")
-txtActions = txta()
-print(txtActions.readFromFile("E:/Courses/ItSchool/Cotton/doq/Poarta1.txt"))
 
-print("JSON ACTIONS")
-jsonActions = jsa()
-print(jsonActions.readFromFile("E:/Courses/ItSchool/Cotton/res/setupdata.json"))
+time.sleep(tick)
+
+def main():
+    while True:
+        time.sleep(tick)
+        gateActions.uploadDataFromFolder(entries, entries_backup)
+
+main()
+
+
+
+
+
+
+
