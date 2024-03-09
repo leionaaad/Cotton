@@ -21,7 +21,6 @@ class GateBase:
         txtActions = txta()
         csvActions = csva()
         tstamp = str(int(datetime.now().timestamp()))
-        print(len(os.listdir(entriesPath)))
         if len(os.listdir(entriesPath)) > 0:
             os.mkdir(f"{backupPath}/{tstamp}")
 
