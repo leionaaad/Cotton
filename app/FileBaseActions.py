@@ -8,12 +8,14 @@ class FileBaseActions:
     def filebackup(self, srcPath: str, destPath: str, deleteOriginal:bool = True) -> None:
         """Copies a file to another location. It has 3 parameters: source, destination (these are full paths to the file), and an optional bool to delete the source, or not. This is set by default to True."""
         # TODO: error handling if file doesn't exist, or if the destination file already exists.
-        shutil.copyfile(srcPath, destPath)
+        # TODO: add here the intermediate folders if they don't exist
+        shutil.copy(srcPath, destPath)
         if deleteOriginal:
             os.remove(srcPath)
 
 
     def interpretFilename(self, path: str) -> dict:
+        # TODO: This needs a lot of more work, we want to remove bad filenames with multiple ilands of digits or whatnot
         """In case the filename is composed by the assumed pattern, it returns the pieces of the filename as a dict. It needs only a filepath as parameter. The full path will be discarded, and only the filename itself is considered(including the extension)"""
         parts = {}
         #TODO: Error check if file exists or not.
@@ -70,3 +72,4 @@ class FileBaseActions:
         except FileNotFoundError:
             print("Check the path. It seems very very wrong")
             return None
+        

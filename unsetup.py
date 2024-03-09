@@ -1,6 +1,5 @@
 import os
 import shutil
-import mysql.connector as mc
 from app.DbBaseActions import DbBaseActions as dba
 from app.FileJsonActions import FileJsonActions as jsa
 
