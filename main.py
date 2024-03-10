@@ -1,6 +1,6 @@
 import sys, time, os, platform
 from datetime import datetime, date
-from flask import Flask, request
+from flask import Flask, request, render_template
 from app.GateBase import GateBase as gb
 from app.Admin import Admin
 from app.DbAccessActions import DbAccessActions as dbaa
@@ -23,6 +23,10 @@ requiredHours = 8
 args = ["main.py", "2"]
 
 gateActions = gb(host, user, password, database, "access")
+dbPersonalActions = dbpa(host, user, password, database, "persoane")
+administer = Admin("mail.leionaaad.com", "chiulangii@leionaaad.com", "anyadkinnya", 465)
+dbAccessActions = dbaa(host, user, password, database, "access")
+dbPersonalActions = dbpa(host, user, password, database, "persoane")
 
 
 def main():
@@ -47,9 +51,6 @@ def main():
 
 
 def reportAwol(date):
-    administer = Admin("mail.leionaaad.com", "chiulangii@leionaaad.com", "anyadkinnya", 465)
-    dbAccessActions = dbaa(host, user, password, database, "access")
-    dbPersonalActions = dbpa(host, user, password, database, "persoane")
     guys = administer.calculateTime(dbAccessActions.getDailyEntries(date))
     awols = []
     for guy in guys:
@@ -92,17 +93,21 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello():
-    return "Motherfucker"
+    return render_template("index.html")
 
 
 @app.route("/admin", methods = ["GET"])
 def showAdminPage():
-    return "this is the admin page, buddy"
+    return render_template("index.html")
 
 
-@app.route("/admin", methods = ["POST"])
-def getAdminData():
-    return f"some admin data has been received {request.json}"
+@app.route("/submitform", methods = ["POST"])
+def addNewGuy():
+    managerSurname, managerName = request.form["manager"].split(" ")
+    manager_id = dbPersonalActions.lookupIdByName(managerName, managerSurname)
+    formresult = {"name": request.form["name"], "surname": request.form["surname"], "company": request.form["company"], "managerId": manager_id, "email": request.form["email"]}
+    dbPersonalActions.addEntry(formresult)
+    return render_template("formSubmitted.html")
 
 
 @app.route("/gate", methods = ["POST"])
