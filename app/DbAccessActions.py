@@ -1,5 +1,4 @@
 from app.DbBaseActions import DbBaseActions
-import mysql.connector as mc
 from datetime import datetime as dt
 
 
@@ -21,3 +20,9 @@ class DbAccessActions(DbBaseActions):
         self.__cursor.execute(f"INSERT INTO `{self.table}` VALUES (Null, '{data["IdPersoana"]}', '{dbTimestamp}', '{data["Sens"]}', '{data["Poarta"]}'); ")
         self.__conn.commit()
 
+
+    def getDailyEntries(self, date: str) -> tuple:
+        """Provide a date in the format YYYY-mm-dd ant get all the enries of that specific date"""
+        self.__cursor.execute(f"SELECT IdPersoana, Data, Sens FROM `{self.table}` WHERE DATE(Data) = \"{date}\"")
+        result = self.__cursor.fetchall()
+        return result

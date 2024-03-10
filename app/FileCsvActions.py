@@ -18,8 +18,15 @@ class FileCsvActions(FileBaseActions):
         file.close()
 
         return result
-
-
+    
+    def writeListToFile(self, path: str, content: list, overwrite: bool = True) -> None:
+        """Writes a list of same structure dictionaryies to a file"""
+        csvfile = open(path, "w", newline="")
+        writer = csv.DictWriter(csvfile, fieldnames=content[0].keys())
+        writer.writeheader()
+        for row in content:
+            writer.writerow(row)
+        csvfile.close()
 
 
 
