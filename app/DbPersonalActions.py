@@ -27,8 +27,13 @@ class DbPersonalActions(DbBaseActions):
         self.__cursor.execute(f"UPDATE `{self.table}` SET {query[:-1]} WHERE (`id` = {id})")
         self.__conn.commit()
 
-    def lookupById(self, id) -> tuple:
+    def lookupById(self, id: str) -> tuple:
         self.__cursor.execute(f"SELECT * FROM {self.table} WHERE `id` = {id}")
         result = self.__cursor.fetchall()[0]
         return result
+    
+    def lookupIdByName(self, name: str, surname: str) -> int:
+        self.__cursor.execute(f"SELECT id FROM {self.table} WHERE `Nume`= \"{name}\" AND `Prenume` = \"{surname}\";")
+        result = self.__cursor.fetchall()
+        return result[0][0]
 
