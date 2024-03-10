@@ -1,5 +1,4 @@
 from app.DbBaseActions import DbBaseActions
-import mysql.connector as mc
 
 class DbPersonalActions(DbBaseActions):
     """Some convenient methods to insert data in the Personal table of the database. All these are possible from the base class too."""
@@ -27,4 +26,9 @@ class DbPersonalActions(DbBaseActions):
             query += f"`{dictItems[0]}` = '{dictItems[1]}', "
         self.__cursor.execute(f"UPDATE `{self.table}` SET {query[:-1]} WHERE (`id` = {id})")
         self.__conn.commit()
+
+    def lookupById(self, id) -> tuple:
+        self.__cursor.execute(f"SELECT * FROM {self.table} WHERE `id` = {id}")
+        result = self.__cursor.fetchall()[0]
+        return result
 

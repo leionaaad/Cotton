@@ -27,3 +27,17 @@ class FileTxtActions(FileBaseActions):
         file.close()
 
         return result
+    
+
+    def writeListToFile(self, path: str, content: list, overwrite: bool = True) -> None:
+        """Writes a txt file. It needs a full path to the file, the conent as a dict and a boolean to overwrite the existing file or not."""
+        txtFile = open(path, "w")
+        for item in content:
+            row = ""
+            for part in item.values():
+                if row == "":
+                    row = part
+                else:
+                    row = f"{row}, {part}"
+            txtFile.writelines(f"{row};\n")
+        txtFile.close()
