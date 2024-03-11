@@ -20,7 +20,7 @@ timecutoff = 20
 requiredHours = 8
 
 #Temporary!
-# args = ["main.py", "2"]
+# args = ["main.py", "1"]
 
 gateActions = gb(host, user, password, database, "access")
 dbPersonalActions = dbpa(host, user, password, database, "persoane")
@@ -54,7 +54,7 @@ def reportAwol(date):
     guys = administer.calculateTime(dbAccessActions.getDailyEntries(date))
     awols = []
     for guy in guys:
-        if guys[guy] / 3600 < timecutoff:
+        if guys[guy] / 3600 < requiredHours:
             guydata = dbPersonalActions.lookupById(int(guy))
             managerdata = dbPersonalActions.lookupById(guydata[4])
             awols.append({"name": guydata[2], "surname": guydata[1], "manager_name": f"{managerdata[2]} {managerdata[1]}", "manager_email": managerdata[-1], "hours": str(int(guys[guy] // 3600)).zfill(2), "minutes": str(int(guys[guy] % 3600) // 60).zfill(2)})
