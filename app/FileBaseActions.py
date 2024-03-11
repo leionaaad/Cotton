@@ -43,7 +43,7 @@ class FileBaseActions:
                 fileVars = f"{fileVars}{key} = \"{value}\"\n"
         elif type(source) == list:
             for item in source:
-                fileVars = f"{fileVars}{item["name"]} = \"{item["path"]}\"\n"
+                fileVars = f"{fileVars}{item['name']} = \"{item['path']}\"\n"
         return fileVars
 
 

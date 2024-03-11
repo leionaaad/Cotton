@@ -17,7 +17,7 @@ class DbAccessActions(DbBaseActions):
         # TODO: correct the timestamp!
         timestamp = dt.strptime(data["Data"], "%Y-%m-%dT%H:%M:%S.%fZ")
         dbTimestamp = timestamp.strftime("%Y-%m-%d %H:%M:%S")
-        self.__cursor.execute(f"INSERT INTO `{self.table}` VALUES (Null, '{data["IdPersoana"]}', '{dbTimestamp}', '{data["Sens"]}', '{data["Poarta"]}'); ")
+        self.__cursor.execute(f"INSERT INTO `{self.table}` VALUES (Null, \"{data['IdPersoana']}\", \"{dbTimestamp}\", \"{data['Sens']}\", \"{data['Poarta']}\"); ")
         self.__conn.commit()
 
 

@@ -20,7 +20,7 @@ timecutoff = 20
 requiredHours = 8
 
 #Temporary!
-args = ["main.py", "2"]
+# args = ["main.py", "2"]
 
 gateActions = gb(host, user, password, database, "access")
 dbPersonalActions = dbpa(host, user, password, database, "persoane")
@@ -64,19 +64,19 @@ def reportAwol(date):
         content = {}
         if item["manager_name"] not in messages.keys():
             content["email"] = item["manager_email"]
-            content["title"] = f"Dearest {item["manager_name"]}"
-            content["body"] = f"The following people were not performing their duties faithfully:\n {item["surname"]} {item["name"]}: {item["hours"]}:{item["minutes"]}"
+            content["title"] = f"Dearest {item['manager_name']}"
+            content["body"] = f"The following people were not performing their duties faithfully:\n {item['surname']} {item['name']}: {item['hours']}:{item['minutes']}"
             messages[item["manager_name"]] = content
         else:
-            messages[item["manager_name"]]["body"] = f"{messages[item["manager_name"]]["body"]}\n{item["surname"]} {item["name"]}: {item["hours"]}:{item["minutes"]}"
+            messages[item["manager_name"]]["body"] = f"{messages[item['manager_name']]['body']}\n{item['surname']} {item['name']}: {item['hours']}:{item['minutes']}"
 
     for item in messages.values():
-        administer.sendEmail(item["email"], f"Chiulangii din {date}", f"{item["title"]}\n\n{item["body"]}")
+        administer.sendEmail(item["email"], f"Chiulangii din {date}", f"{item['title']}\n\n{item['body']}")
         time.sleep(2)
     
     fileContent =[]
     for item in awols:
-        fileContent.append({"Nume": f"{item["name"]} {item["surname"]}", "Ore Lucrate": f"{item["hours"]}:{item["minutes"]}"})
+        fileContent.append({"Nume": f"{item['name']} {item['surname']}", "Ore Lucrate": f"{item['hours']}:{item['minutes']}"})
 
     csvActions = csva()
     csvActions.writeListToFile(f"{entries_backup}/{date}_chiulangii.csv", fileContent, True)

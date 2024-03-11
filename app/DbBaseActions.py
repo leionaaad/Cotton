@@ -65,10 +65,10 @@ class DbBaseActions:
         tableData += "PRIMARY KEY (`id`), UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE"
 
         if overwrite:
-            self.__cursor.execute(f"DROP TABLE IF EXISTS `{data["name"]}`;")
-            self.__cursor.execute(f" CREATE TABLE `{data["name"]}` ({tableData});")
+            self.__cursor.execute(f"DROP TABLE IF EXISTS `{data['name']}`;")
+            self.__cursor.execute(f" CREATE TABLE `{data['name']}` ({tableData});")
         else:
-            self.__cursor.execute(f"CREATE TABLE IF NOT EXISTS `{data["name"]}` ({tableData});")
+            self.__cursor.execute(f"CREATE TABLE IF NOT EXISTS `{data['name']}` ({tableData});")
         self.__conn.commit()
 
 

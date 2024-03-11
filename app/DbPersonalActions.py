@@ -11,7 +11,7 @@ class DbPersonalActions(DbBaseActions):
     def addEntry(self, data: dict) -> None:
         """Yes, this exists in the parent class, but here uses a specific, more conveniant way to insert data into the personal table. Basically a shorter way of doing things."""
         #TODO: add error handling.
-        self.__cursor.execute(f"INSERT INTO `{self.table}` VALUES (Null, '{data["name"]}', '{data["surname"]}', '{data["company"]}', '{data["managerId"]}', '{data["email"]}'); ")
+        self.__cursor.execute(f"INSERT INTO `{self.table}` VALUES (Null, \"{data['name']}\", \"{data['surname']}\", \"{data['company']}\", \"{data['managerId']}\", \"{data['email']}\"); ")
         self.__conn.commit()
 
     def removeEntry(self, id: int) -> None:

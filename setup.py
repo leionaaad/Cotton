@@ -37,7 +37,7 @@ def getInfoFromUserTerminal() -> dict :
     dba(data["db"]["host"], data["db"]["user"], data["db"]["password"])
 
     for folder in data["folders"]:
-        pathToFolder = input(f"Where to save the {folder["nice name"]} folder? hit enter if you want to save in the current directory under Data folder: ")
+        pathToFolder = input(f"Where to save the {folder['nice name']} folder? hit enter if you want to save in the current directory under Data folder: ")
         if not pathToFolder == "":
             folder["path"] = pathToFolder
     print(120 * "=")
